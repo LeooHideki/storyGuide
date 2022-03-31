@@ -9,7 +9,7 @@
 
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<title>Login Storeguide</title>
+<title>Cadastre sua marca</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="styleMain.css">
 </head>
@@ -18,23 +18,23 @@
 	<div class="container">
 		<div class="content">
 			<div id="cadastro">
-				<form method="post" action="salvarAdmin">
-				<input type="hidden" name="id" th:value="${administrador?.id}"/>
-					<h1>Cadastro</h1>
+				<form method="post" action="salvarMarca">
+				<input type="hidden" name="id" th:value="${marca?.id}"/>
+					<h1>Cadastre sua marca</h1>
 
 					<p>
 						<label for="nome_cad">Nome</label> 
-						<input id="nome_cad" name="nome" th:value="${administrador?.nome}" required="required" type="text" />
+						<input id="nome_cad" name="nome" th:value="${marca?.nome}" required="required" type="text" />
 					</p>
 
 					<p>
-						<label for="email_cad">E-mail</label> 
-						<input id="email_cad" name="email" th:value="${administrador?.email}" required="required" type="email" />
+						<label for="desc_cad">Descrição</label> 
+						<input id="desc_cad" name="descricao" th:value="${marca?.descricao}" required="required" type="text" />
 					</p>
 
 					<p>
-						<label for="senha_cad">Senha</label> 
-						<input id="senha_cad" name="senha" type="password" />
+						<label for="estilo_cad">Estilo</label> 
+						<input id="estilo_cad" name="estilo" th:value="${marca?.estilo}" required="required" type="text" />
 					</p>
 
 					<p>

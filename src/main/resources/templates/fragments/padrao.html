@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xlmns:th="http://thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<header th:fragment="cabecalho">
+		<nav style="background-color:teal">
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo"><img style="width:200px" src="../imagens/logo.png"></a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="/cadastroMarca">Cadastre sua marca</a></li>
+        <li><a href="/listaMarca/1">Lista de marcas</a></li>
+        <li><a href="/listaAdmin/1">Lista de Administradores</a></li>
+      </ul>
+    </div>
+  </nav>
+	</header>
+	<footer th:fragment="rodape" class="page-footer" style="background-color:rgb(29, 162, 193); bottom:0; position:fixed; width:100%">
+		 <div class="footer-copyright" style="background-color:teal; text-align:center;">
+            <div class="container">
+            © 2022 Copyright Leonardo Hideki '-'          
+            </div>
+          </div>		
+	</footer>
+</body>
+</html>

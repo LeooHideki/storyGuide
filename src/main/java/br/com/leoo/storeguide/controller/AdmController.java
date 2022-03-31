@@ -20,11 +20,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.leoo.storeguide.model.Administrador;
 import br.com.leoo.storeguide.repository.AdminRepository;
+import br.com.leoo.storeguide.util.HashUtil;
 
 @Controller
 public class AdmController {
-	
-	//variavel para persistências dos dados
+
+	// variavel para persistências dos dados
 	@Autowired
 	private AdminRepository repository;
 
@@ -32,8 +33,8 @@ public class AdmController {
 	public String form() {
 		return "admCadastro";
 	}
-	
-	//request mapping para salvar o Administrador, do tipo POST
+
+	// request mapping para salvar o Administrador, do tipo POST
 	@RequestMapping(value="salvarAdmin", method = RequestMethod.POST)
 	public String salvarAdmin(@Valid Administrador adm, BindingResult result, RedirectAttributes attr) {
 		//verifica se houveram erros na validação
@@ -43,6 +44,24 @@ public class AdmController {
 			//redireciona para o formulário
 			return "redirect:cadastroAdmin";
 		}
+		
+		//variavel para descobrir alteração ou inserção
+		boolean alteracao = adm.getId() !=null ? true : false;
+		//verificar se a senha está vazia
+		if(adm.getSenha().equals(HashUtil.hash(""))) {
+			if(!alteracao) {
+				//retira a parte antes do @ no e-mail
+				String parte = adm.getEmail().substring(0, adm.getEmail().indexOf("@"));
+				//"setar" a parte na senha do admin
+				adm.setSenha(parte);
+			}else {
+				//buscar a senha atual no banco
+				String hash = repository.findById(adm.getId()).get().getSenha();
+				//"setar" o hash na senha
+				adm.setSenhaComHash(hash);
+			}
+		}
+		
 		try {
 		//salva no banco de dados a entidade
 		repository.save(adm);
@@ -52,35 +71,34 @@ public class AdmController {
 			attr.addFlashAttribute("mensagemErro", "Houve um erro ao cadastrar:"+e.getMessage());
 		}
 		return "redirect:cadastroAdmin";
+		
 	}
-	@RequestMapping("/")
-		public void handleRequest() {
-	    throw new RuntimeException("test exception");
-	  }
+
 	@RequestMapping("listaAdmin/{page}")
 	public String listaAdmin(Model model, @PathVariable("page") int page) {
-		//cria um pageable informando os parâmetros da página
-		PageRequest pageable = PageRequest.of(page-1, 6, Sort.by(Sort.Direction.ASC, "nome"));
-		//cria um page de Administrador atravéz dos parâmetros passados pelo repository
+		// cria um pageable informando os parâmetros da página
+		PageRequest pageable = PageRequest.of(page - 1, 6, Sort.by(Sort.Direction.ASC, "nome"));
+		// cria um page de Administrador atravéz dos parâmetros passados pelo repository
 		Page<Administrador> pagina = repository.findAll(pageable);
-		//adiciona à Model, lista com os admins
+		// adiciona à Model, lista com os admins
 		model.addAttribute("admins", pagina.getContent());
-		//variável para o total de páginas
+		// variável para o total de páginas
 		int totalPages = pagina.getTotalPages();
-		//cria um List de inteiros para armazenar os números das páginas
+		// cria um List de inteiros para armazenar os números das páginas
 		List<Integer> numPaginas = new ArrayList<Integer>();
-		//preencher o list com as páginas
-		for(int i = 1; i <= totalPages; i++) {
-			//adiciona página ao List
+		// preencher o list com as páginas
+		for (int i = 1; i <= totalPages; i++) {
+			// adiciona página ao List
 			numPaginas.add(i);
 		}
-		//adiciona os valores à model
+		// adiciona os valores à model
 		model.addAttribute("numPaginas", numPaginas);
 		model.addAttribute("totalPages", totalPages);
 		model.addAttribute("pagAtual", page);
-		//retorna para o html da lista
+		// retorna para o html da lista
 		return "admLista";
 	}
+
 	@RequestMapping("alterarAdmin")
 	public String alterar(Long id, Model model) {
 		Administrador adm = repository.findById(id).get();
