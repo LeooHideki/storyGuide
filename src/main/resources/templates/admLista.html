@@ -6,16 +6,21 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
-
+<link rel="stylesheet" href="/lista.css">
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <title>Lista de administrador</title>
+<style>
+	td, th{
+		padding: 15px 110px;
+	}
+</style>
 </head>
 <body>
 <header th:replace="fragments/padrao :: cabecalho"></header>
 	<table>
 		<thead>
-			<tr>
+			<tr style="background-color:#4db6ac">
 				<th>Id</th>
 				<th>Nome</th>
 				<th>E-mail</th>
@@ -24,14 +29,14 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr th:each="adm:${admins}">
+			<tr th:each="adm:${admins}" style="background-color:#b2dfdb">
 				<td th:text="${adm.id}" />
 				<td th:text="${adm.nome}" />
 				<td th:text="${adm.email}" />
-				<td><a th:href="@{/alterarAdmin(id=${adm.id})}"><button>Alterar</button></a></td>
+				<td><a th:href="@{/alterarAdmin(id=${adm.id})}"><button class="button">Alterar</button></a></td>
 				<td><a
 					th:attr="onclick=|return confirm('Confirmar exclusão do Id: ${adm.id}')|"
-					th:href="@{/excluirAdmin(id=${adm.id})}"><button>Excluir</button></a></td>
+					th:href="@{/excluirAdmin(id=${adm.id})}"><button class="button">Excluir</button></a></td>
 			</tr>
 		</tbody>
 	</table>

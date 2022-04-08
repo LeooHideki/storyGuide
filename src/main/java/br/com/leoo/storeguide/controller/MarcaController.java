@@ -73,5 +73,9 @@ public class MarcaController {
 		repository.deleteById(id);
 		return "redirect:listaMarca/1";
 	}
-	
+	@RequestMapping("/listaMarca")
+	public String buscarEstilo(String estilo, Model model) {		
+		model.addAttribute("marcas", repository.buscarEstilo(estilo));	
+		return "marcaLista";
+	}
 }

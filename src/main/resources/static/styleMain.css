@@ -6,7 +6,7 @@
   font-family: Arial,sans-serif;
 }
 body{
-	background-image: url(imagens/);	
+	background-color:#e0f2f1;
 }
  
 /* remove a linha dos links */
@@ -25,7 +25,7 @@ a.links{
   position: relative;  
   border: 1px solid #066a75;
   border-radius: 10px;
-  box-shadow: 40px -16px teal;
+  box-shadow:  10px 5px 5px  rgba(0,0,0,0.5);
   padding: 10px; 
 }
 h1{
