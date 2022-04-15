@@ -9,7 +9,7 @@
 
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<title>Cadastro de adm</title>
+<title>Login Storeguide</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="styleMain.css">
 </head>
@@ -18,33 +18,33 @@
 	<div class="container">
 		<div class="content">
 			<div id="cadastro">
-				<form method="post" action="salvarAdmin">
-				<input type="hidden" name="id" th:value="${administrador?.id}"/>
-					<h1>Cadastro</h1>
+				<form method="post">
+					<input type="hidden" name="id" th:value="${administrador?.id}" />
+					<h1>Login</h1>
 
 					<p>
-						<label for="nome_cad">Nome</label> 
-						<input id="nome_cad" name="nome" th:value="${administrador?.nome}" required="required" type="text" />
+						<label>Login</label> <input id="login_cad" name="login"
+							required="required" type="text" />
 					</p>
 
 					<p>
-						<label for="email_cad">E-mail</label> 
-						<input id="email_cad" name="email" th:value="${administrador?.email}" required="required" type="email" />
+						<label>Senha</label> <input id="senha_cad" name="senha"
+							type="password" />
 					</p>
 
 					<p>
-						<label for="senha_cad">Senha</label> 
-						<input id="senha_cad" name="senha" type="password" />
+						<label> <input name="entrega" type="checkbox" 
+							class="filled-in" /> <span>Manter conectado</span>
+						</label>
 					</p>
 
 					<p>
-						<input type="submit" value="Cadastrar" />
+						<input type="submit" value="Entrar" />
 					</p>
 
 					<p class="link">
-						Já tem conta? <a href="login"> Ir para Login </a>
+						Ainda não tem conta? <a href="/cadastroAdmin">Cadastre-se</a>
 					</p>
-
 				</form>
 			</div>
 			<div th:replace="fragments/mensagem"></div>

@@ -35,4 +35,11 @@ public class Loja {
 	private boolean estacionamento;
 	@ManyToOne
 	private Marca marca;
+	
+	//retorna as fotos na forma vetor de string
+	public String[] verFotos() {
+	return fotos.split(";");
+	}
 }
+
+

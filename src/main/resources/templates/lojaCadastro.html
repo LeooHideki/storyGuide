@@ -84,7 +84,8 @@
 	<div class="container">
 		<div class="content" style="width: 50%; margin-bottom: 100px;">
 			<div id="cadastro">
-				<form method="post" action="salvarLoja" enctype="multipart/form-data">
+				<form method="post" action="salvarLoja"
+					enctype="multipart/form-data">
 					<input type="hidden" name="id" th:value="${loja?.id}" />
 					<h1>Cadastre sua Loja</h1>
 
@@ -99,22 +100,26 @@
 								th:text="${option.nome}"></option>
 						</select>
 					</p>
-					
-						<label>Cep<input name="cep" type="text" id="cep" value=""
-							size="10" maxlength="9" onblur="pesquisacep(this.value);" /> <label>Estado
-								<input name="estado" type="text" id="uf" size="2" readonly />
-						</label> <label>Cidade <input name="cidade" type="text"
-								id="cidade" size="40" readonly/></label> <label>Bairro <input
-								name="bairro" type="text" id="bairro" size="40" readonly /></label> <label>Rua
-								<input name="endereco" type="text" id="rua" size="60" readonly />
-						</label> <label>Complemento</label> <input name="complemento"
-							th:value="${loja?.complemento}" required="required" type="text" /></label>
-						</label> <label>Número</label> <input name="numero"
-							th:value="${loja?.numero}" required="required" type="text" /></label>
-					
+
+					<label>Cep<input name="cep" type="text" id="cep"
+						th:value="${loja?.cep}" size="10" maxlength="9"
+						onblur="pesquisacep(this.value);" /> <label>Estado <input
+							name="estado" type="text" id="uf" size="2" readonly
+							th:value="${loja?.estado}" />
+					</label> <label>Cidade <input name="cidade" type="text"
+							th:value="${loja?.cidade}" id="cidade" size="40" readonly /></label> <label>Bairro
+							<input name="bairro" type="text" id="bairro" size="40" readonly
+							th:value="${loja?.bairro}" />
+					</label> <label>Rua <input name="endereco" type="text" id="rua"
+							size="60" readonly th:value="${loja?.endereco}" />
+					</label> <label>Complemento</label> <input name="complemento"
+						th:value="${loja?.complemento}" required="required" type="text" /></label>
+					</label> <label>Número</label> <input name="numero"
+						th:value="${loja?.numero}" required="required" type="text" /></label>
+
 					<p>
 						<label>Formas de pagamento</label> <input name="formasPagamento"
-							th:value="${loja?.formasPagmento}" required="required"
+							th:value="${loja?.formasPagamento}" required="required"
 							type="text" />
 					</p>
 
@@ -134,30 +139,48 @@
 							th:value="${loja?.telefone}" required="required" type="text" />
 					</p>
 					<p>
-						<label> <input name="estacionamento" type="checkbox"
+						<label> <input name="estacionamento" type="checkbox" th:checked="${loja?.estacionamento}"
 							class="filled-in" /> <span>Estacionamento</span>
 						</label>
 					</p>
 					<p>
-						<label> <input name="entrega" type="checkbox"
+						<label> <input name="entrega" type="checkbox" th:checked="${loja?.entrega}"
 							class="filled-in" /> <span>Delivery</span>
 						</label>
 					</p>
 					<p>
 						<label>Descrição</label>
 						<textarea name="descricao" rows="10" cols="30"
+							th:value="${loja?.descricao}"
 							style="border-radius: 5px; padding: 10px;"></textarea>
 					</p>
-		
-						<div class="file-field input-field">
-							<div class="btn">
-								<span>File</span> <input type="file" name="fts" multiple accept="image/*">
-							</div>
-							<div class="file-path-wrapper">
-								<input class="file-path validate" type="text" placeholder="Selecione uma ou várias fotos">
-							</div>
+
+					<div class="file-field input-field">
+						<div class="btn">
+							<span>File</span> <input type="file" name="fileFotos" multiple
+								accept="image/*">
 						</div>
+						<div class="file-path-wrapper">
+							<input class="file-path validate" type="text"
+								placeholder="Selecione uma ou várias fotos">
+						</div>
+					</div>
 					
+					<input type="hidden" th:value="${loja?.fotos}" name="fotos" />
+					
+					<div th:if="${loja?.fotos?.length > 0}">
+						<h6>Fotos cadastradas</h6>
+						<div>
+							<ul id="fotos">
+								<li th:each="foto, i : ${loja?.verFotos()}">
+								<a th:href="${foto}" target="blak"><img th:src="${foto}"></a>
+								<a th:href="@{/excluirFotos(idLoja=${loja?.id},numFoto=${i.index})}">
+								<i class="material-icons">delete_forever</i></a>
+								</li>
+							</ul>
+						</div>
+					</div>
+
 					<p>
 						<input type="submit" value="Cadastrar" />
 					</p>

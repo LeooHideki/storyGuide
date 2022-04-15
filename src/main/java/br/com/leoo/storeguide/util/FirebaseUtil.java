@@ -5,13 +5,18 @@ import java.util.UUID;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.auth.Credentials;
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.firestore.Blob;
+import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 
+@Service
 public class FirebaseUtil {
 	
 	//variável para guardar as credenciais de acesso
@@ -19,7 +24,7 @@ public class FirebaseUtil {
 	//variável para acessar e manipular o storage
 	private Storage storage;
 	//comstante para o nome do bucket
-	private final String BUCKET_NAME = ";storeguide-leo.appspot.com";
+	private final String BUCKET_NAME = "storeguide-leo.appspot.com";
 	//constante para o prefixo da URL
 	private final String PREFIX = "https://firebasestorage.googleapis.com/v0/b/"+BUCKET_NAME+"/o/";
 	//constante para o sufixo da URL
@@ -48,10 +53,27 @@ public class FirebaseUtil {
 		return nomeArquivo.substring(nomeArquivo.lastIndexOf('.'));
 	}
 	
-	//método que faz o upload
-	public String upload(MultipartFile arquivo) {
-		//gera um nome aleatório para o arquivo e concatena com a extensão
-		String nomeArquivo = UUID.randomUUID().toString() + getExtensao(arquivo.getOriginalFilename());
-		return "";
+	//metodo que faz o upload
+	public String upload(MultipartFile arquivo) throws IOException {
+	//gera um nome aleatorio para o arquivo
+	String nomeArquivo = UUID.randomUUID().toString() + getExtensao(arquivo.getOriginalFilename());
+	// criar um blobId atraves do nome gerado para o arquivo
+	BlobId blobId = BlobId.of(BUCKET_NAME, nomeArquivo);
+	// cria um blobinfo atraves do blobid
+	BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("media").build();
+	// gravar o blobinfo no storage passando os bytes do arquivo
+	storage.create(blobInfo, arquivo.getBytes());
+	//retorna a URl do arquivo gerado no Storage
+	return String.format(DOWNLOAD_URL, nomeArquivo);
+	}
+
+	//metodo que exclui o arquivo do storage
+	public void deletar(String nomeArq) {
+	//retirar o prefixo e o sufixo da string
+	nomeArq = nomeArq.replace(PREFIX, "").replace(SUFFIX, "");
+	//obter um Blob atraves do nome
+	com.google.cloud.storage.Blob blob = storage.get(BlobId.of(BUCKET_NAME, nomeArq));
+	//deleta atraves do blob
+	storage.delete(blob.getBlobId());
 	}
 }

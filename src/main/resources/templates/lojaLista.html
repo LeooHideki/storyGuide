@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+<link rel="stylesheet" href="/lista.css">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<title>Lista de marcas</title>
+<style>
+	td, th{
+		padding: 15px 110px;
+	}
+</style>
+</head>
+<body>
+<header th:replace="fragments/padrao :: cabecalho"></header>
+	<div>
+		<table style="padding: 500px!important">
+		<thead>
+			<tr style="background-color:#4db6ac;">
+				<th>Id</th>
+				<th>Nome</th>
+				<th>Telefone</th>
+				<th>Site</th>
+				<th>Marca</th>
+				<th>Alterar</th>
+				<th>Excluir</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="l:${loja}" style="background-color:#b2dfdb">
+				<td th:text="${l.id}" />
+				<td th:text="${l.nome}" />
+				<td th:text="${l.telefone}" />
+				<td th:text="${l.site}"/>
+				<td th:text="${l.marca.nome}"/>
+				<td><a th:href="@{/alterarLoja(id=${l.id})}"><button class="button">Alterar</button></a></td>
+				<td><a
+					th:attr="onclick=|return confirm('Confirmar exclusão do Id: ${l.id}')|"
+					th:href="@{/excluirLoja(id=${l.id})}"><button class="button">Excluir</button></a></td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+	<nav aria-label="Page navigation example" id="paginas"
+		style="background-color: white; position: fixed; display: flex; justify-content: center; padding-top:20px">
+		<ul class="pagination">
+			<li class="page-item" style="display:flex;"
+				th:class="${pagAtual == 1 ? 'disabled' : 'page-link'}"><a
+				class="page-link" th:href="${pagAtual > 1 ? pagAtual - 1 : '#'}"
+				aria-label="Previous"> <span aria-hidden="true">&laquo;</span> <span
+					class="sr-only"></span>
+			</a></li>
+			<li th:each="p:${numPaginas}" style="display:flex;"
+				th:class="${pagAtual == p ? 'active teal' : 'page-link'}"><a 
+				th:href="${p}"><span th:text="${p}"></span></a></li>
+			<li class="page-item" style="display:flex;"
+				th:class="${pagAtual == totalPages ? 'disabled' : 'page-link'}">
+				<a class="page-link" 
+				th:href="${pagAtual < totalPages ? pagAtual + 1 : '#'}"
+				aria-label="Next"> <span class="sr-only"></span> <span
+					aria-hidden="true">&raquo;</span>
+			</a>
+			</li>
+		</ul>
+	</nav>
+	<footer th:replace="fragments/padrao :: rodape"></footer>
+</body>
+</html>
