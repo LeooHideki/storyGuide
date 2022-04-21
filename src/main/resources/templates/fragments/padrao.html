@@ -8,7 +8,9 @@
 	<header th:fragment="cabecalho">
 		<nav style="background-color:teal">
     <div class="nav-wrapper">
+    
       <a href="#" class="brand-logo"><img style="width:200px" src="../imagens/logo.png"></a>
+      <div class="nav" th:if="${session.usuarioLogado != null}">
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><a href="/cadastroMarca">Cadastre sua marca</a></li>
         <li><a href="/cadastroLoja">Cadastre sua loja</a></li>
@@ -16,6 +18,7 @@
         <li><a href="/listaAdmin/1">Lista de Administradores</a></li>
         <li><a href="/listaLoja/1">Lista de Lojas</a></li>
       </ul>
+      </div>
     </div>
   </nav>
 	</header>

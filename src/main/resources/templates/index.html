@@ -18,12 +18,12 @@
 	<div class="container">
 		<div class="content">
 			<div id="cadastro">
-				<form method="post">
-					<input type="hidden" name="id" th:value="${administrador?.id}" />
+				<form method="post" action="login">
+					
 					<h1>Login</h1>
 
 					<p>
-						<label>Login</label> <input id="login_cad" name="login"
+						<label>Login</label> <input id="login_cad" name="email"
 							required="required" type="text" />
 					</p>
 
@@ -39,7 +39,7 @@
 					</p>
 
 					<p>
-						<input type="submit" value="Entrar" />
+						<input type="submit" value="Entrar"/>
 					</p>
 
 					<p class="link">

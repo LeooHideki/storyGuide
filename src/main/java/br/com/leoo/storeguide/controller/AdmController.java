@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.leoo.storeguide.annotation.Publico;
 import br.com.leoo.storeguide.model.Administrador;
-import br.com.leoo.storeguide.model.Loja;
 import br.com.leoo.storeguide.repository.AdminRepository;
 import br.com.leoo.storeguide.util.HashUtil;
 
@@ -35,10 +33,7 @@ public class AdmController {
 	public String form() {
 		return "admCadastro";
 	}
-	@RequestMapping("login")
-	public String formLogin() {
-		return "index";
-	}
+
 	
 
 	// request mapping para salvar o Administrador, do tipo POST
@@ -119,6 +114,8 @@ public class AdmController {
 		return "redirect:listaAdmin/1";
 	}
 	
+	@Publico
+	@RequestMapping("login")
 	public String login(Administrador admLogin, RedirectAttributes attr, HttpSession session) {
 		//busca o administrador no banco
 		Administrador admin = repository.findByEmailAndSenha(admLogin.getEmail(), admLogin.getSenha());
@@ -132,5 +129,13 @@ public class AdmController {
 			return "redirect:/listaLoja/1";
 		}
 		
+	}
+	
+	@RequestMapping("logout")
+	public String logout(HttpSession session) {
+		//invalida a sessão
+		session.invalidate();
+		//voltar para a página inicial
+		return "redirect:/";
 	}
 }
